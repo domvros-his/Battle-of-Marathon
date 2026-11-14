@@ -187,6 +187,17 @@ button:disabled{cursor:not-allowed;opacity:.48;filter:grayscale(.25)}
  #battlefield{min-height:152px}
 }
 
+
+/* MARATHON Pi formation: permanent, compact tactical explanation button */
+#piBtn{position:absolute;z-index:4;right:10px;top:10px;border:1px solid #e8cf8e;background:#304f3eea;color:#fff9da;border-radius:8px;padding:6px 11px;box-shadow:0 3px 12px #131d1766;font:800 12px Georgia,serif;white-space:nowrap}
+#piBtn:hover,#piBtn:focus-visible{background:#456b4d}
+#piBtn:first-letter{font-size:17px}
+@media(max-width:660px){#piBtn{top:5px;right:5px;padding:3px 7px;font-size:10px;border-radius:6px}#piBtn span{font-size:9px}}
+
+
+/* Clear battlefield: hide informational overlays that covered the illustration.
+   Explanations remain available via the side panel and the Help button. */
+#chartCaption, #toast { display: none !important; }
 </style>
 </head>
 <body>
@@ -194,7 +205,7 @@ button:disabled{cursor:not-allowed;opacity:.48;filter:grayscale(.25)}
 <header id="head"><div id="identity"><div class="emblem" aria-hidden="true">Μ</div><div><strong>ΜΑΡΑΘΩΝ <span>490 π.Χ.</span></strong><small>Η ΣΤΙΓΜΗ ΤΗΣ ΑΠΟΦΑΣΗΣ · ΠΑΙΧΝΙΔΙ ΣΤΡΑΤΗΓΙΚΗΣ</small></div></div>
 <div id="headBtns"><button class="ghost" id="guideBtn" title="Οδηγίες παιχνιδιού"><span class="mini">?</span> <span class="buttontext">Οδηγίες</span></button><button class="ghost" id="historyBtn" title="Ιστορικά στοιχεία και πηγές"><span class="mini">⌘</span> <span class="buttontext">Ιστορία & πηγές</span></button><button class="ghost" id="soundBtn" title="Ήχος"><span class="mini">♫</span><span class="buttontext" id="soundText"> Ήχος: ναι</span></button><button class="ghost resetbtn" id="resetBtn" title="Αρχικοποίηση του παιχνιδιού" aria-label="Αρχικοποίηση του παιχνιδιού"><span class="mini" aria-hidden="true">↻</span><span class="buttontext"> Αρχικοποίηση</span></button><button class="ghost" id="pauseBtn" title="Παύση" hidden><span class="mini" id="pauseIcon">Ⅱ</span><span class="buttontext" id="pauseLabel"> Παύση</span></button></div></header>
 <div id="status" aria-live="polite"><div class="stat"><small>Φάση</small><b id="phaseStat">—</b></div><div class="stat"><small>Δεξιά πτέρυγα</small><div class="bar"><span class="track"><i id="rightBar"></i></span><b id="rightStat">0%</b></div></div><div class="stat"><small>Συνοχή κέντρου</small><div class="bar"><span class="track red"><i id="centerBar"></i></span><b id="centerStat">100%</b></div></div><div class="stat"><small>Αριστερή πτέρυγα</small><div class="bar"><span class="track"><i id="leftBar"></i></span><b id="leftStat">0%</b></div></div><div class="stat"><small>Εντολές / βαθμοί</small><b id="resourceStat">75 · 0</b></div></div>
-<main id="middle"><section id="battlefield" aria-label="Διαδραστικό πεδίο μάχης"><canvas id="scene" role="img" aria-label="Ζωγραφική πεδιάδα του Μαραθώνα με ελληνικές και περσικές παρατάξεις. Επίλεξε ελληνική πτέρυγα πατώντας πάνω της."></canvas><div id="badge">ΠΕΔΙΑΔΑ ΜΑΡΑΘΩΝΑ</div><div id="chartCaption">Οι πράσινες ασπίδες δείχνουν τους Έλληνες · τα ερυθρά σύμβολα τους Πέρσες.</div><div id="toast" role="status" hidden></div></section>
+<main id="middle"><section id="battlefield" aria-label="Διαδραστικό πεδίο μάχης"><canvas id="scene" role="img" aria-label="Διαδραστική απεικόνιση της διάταξης Π: λεπτό ελληνικό κέντρο, ισχυρές πτέρυγες και σύγκλιση εναντίον του περσικού κέντρου."></canvas><div id="badge">ΠΕΔΙΑΔΑ ΜΑΡΑΘΩΝΑ</div><button id="piBtn" type="button" aria-label="Εξήγηση της διάταξης Π" title="Δες πώς σχηματίζεται και λειτουργεί το Π">Π <span>Διάταξη Π</span></button><div id="chartCaption">Η διάταξη «Π» δημιουργείται από το ρηχό κέντρο και τις βαθιές ελληνικές πτέρυγες.</div><div id="toast" role="status" hidden></div></section>
 <aside id="headquarters"><div class="sidebar-card phase-card"><span class="kicker">ΣΤΡΑΤΗΓΕΙΟ</span><h2 id="phaseTitle">Πριν από τη σύγκρουση</h2><p id="phaseText">Ετοίμασε τις πτέρυγες και διάλεξε την ώρα της εφόδου.</p></div><div class="sidebar-card selection-card"><span class="kicker">ΤΜΗΜΑ ΤΗΣ ΦΑΛΑΓΓΑΣ</span><h3 id="selectionTitle">Δεξιά πτέρυγα</h3><p id="selectionHint">Διάλεξε τμήμα της παράταξης για να δώσεις ειδική εντολή.</p><div class="lane-buttons"><button class="lane active" data-lane="right">Δεξιά<br>Καλλίμαχος</button><button class="lane" data-lane="center">Κέντρο<br>Αθηναίοι</button><button class="lane" data-lane="left">Αριστερά<br>Πλαταιείς</button></div></div><div class="sidebar-card"><span class="kicker">ΕΝΤΟΛΕΣ ΜΑΧΗΣ</span><div class="commands"><button class="command ochre" id="chargeBtn">⚡ Ορμητική έφοδος</button><button class="command" id="shieldBtn">◉ Ασπίδες ψηλά</button><button class="command" id="supportBtn">✦ Ενίσχυση τμήματος</button><button class="command" id="rallyBtn">✚ Συσπείρωση κέντρου</button><button class="command big" id="envelopBtn">↘ ↗ Σύγκλιση των πτερύγων</button></div></div><div class="sidebar-card log-card"><span class="kicker">ΗΜΕΡΟΛΟΓΙΟ ΜΑΧΗΣ</span><div id="log" aria-live="polite"><p>Οι δύο στρατοί βρίσκονται αντιμέτωποι.</p></div></div></aside></main>
 <footer id="bottomline">Παναγιώτης Δόμβρος, Εκπαιδευτικός - Θεατρολόγος, Επιμορφωτής ΤΠΕ, Διευθυντής 1ου Γυμνασίου Πυλαίας</footer>
 <div id="overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div id="panel"><button id="modalClose" aria-label="Κλείσιμο" hidden>×</button><div class="modal-sup" id="modalKicker">490 π.Χ. • ΠΡΩΤΟΣ ΠΕΡΣΙΚΟΣ ΠΟΛΕΜΟΣ</div><h2 id="modalTitle">Η στιγμή της απόφασης</h2><div id="modalBody"></div><div id="modalActions"></div></div></div>
@@ -222,25 +233,33 @@ const QUESTIONS=[
  {q:'Ποιο μνημείο συνδέεται με τους Αθηναίους νεκρούς της μάχης;',opts:['Ο Λέων της Χαιρώνειας','Ο Τύμβος των Αθηναίων στον Μαραθώνα','Το Ερέχθειο','Ο ναός του Ποσειδώνα'],a:1,why:'Ο Τύμβος των Αθηναίων διατηρεί τη μνήμη των πεσόντων στη μάχη.'}
 ];
 const state={mode:'menu',phase:0,formation:'wings',selected:'right',morale:75,score:0,right:0,left:0,center:100,advance:0,closing:0,persian:100,shield:0,charge:0,cooldown:0,phaseTime:0,time:0,answers:0,answered:0,asked:[],question:null,questionNext:null,paused:false,sound:true,lastTime:0,tick:0,marks:[],soundCtx:null,log:[],ended:false};
+const WING_TRIGGER=60;
 let drawW=1000,drawH=600,dpr=1,scale=1,ox=0,oy=0;
 const logs=[];
 function updateLog(message){logs.unshift(message);if(logs.length>4)logs.pop();$('log').innerHTML=logs.map(x=>'<p>'+x+'</p>').join('')}
 function n(v){return Math.round(v)}
 function updateStatus(){
- const label=['Προετοιμασία','Έφοδος','Πτέρυγες','Σύγκλιση','Ολοκλήρωση'][state.phase];$('phaseStat').textContent=label;
+ const label=['Παράταξη','Έφοδος','Περσική προέλαση','Σύγκλιση πτερύγων','Ολοκλήρωση'][state.phase];$('phaseStat').textContent=state.phase===3&&state.rout?'Καταδίωξη προς την ακτή':label;
  $('rightStat').textContent=n(state.right)+'%';$('leftStat').textContent=n(state.left)+'%';$('centerStat').textContent=n(state.center)+'%';
  $('rightBar').style.width=state.right+'%';$('leftBar').style.width=state.left+'%';$('centerBar').style.width=state.center+'%';$('resourceStat').textContent=n(state.morale)+' · '+n(state.score);
- const titles=['Πριν από τη μάχη','Η μεγάλη έφοδος','Οι δύο πτέρυγες','Η σύγκλιση','Η αναμέτρηση τελείωσε'];
- const messages=['Ο Μιλτιάδης σχεδιάζει την παράταξη των οπλιτών.','Οι οπλίτες κινούνται προς τον εχθρό. Περιόρισε τις απώλειες από τα βέλη.','Το κέντρο δέχεται πίεση. Ενίσχυσε τις πτέρυγες και διατήρησε τη συνοχή.','Οι πτέρυγες στρέφονται προς το περσικό κέντρο.','Η τελική αξιολόγηση είναι διαθέσιμη.'];
- $('phaseTitle').textContent=titles[state.phase];$('phaseText').textContent=messages[state.phase];
+ const titles=['Πριν από τη μάχη','Η μεγάλη έφοδος','Το περσικό κέντρο προελαύνει','Επίθεση από τις πτέρυγες','Η αναμέτρηση τελείωσε'];
+ const messages=['Ισχυρότερες πτέρυγες και ολιγόβαθο κέντρο απέναντι σε πολυαριθμότερη περσική παράταξη.','Οι Έλληνες εφορμούν ενώ οι περσικές γραμμές παίρνουν θέση.','Οι Πέρσες και Σάκες διασπούν το αδύναμο ελληνικό κέντρο, ενώ οι δύο ελληνικές πτέρυγες επικρατούν.','Οι ελληνικές πτέρυγες στρέφονται εναντίον του περσικού κέντρου. Οι Πέρσες δέχονται πλευρική πίεση και τελικά φεύγουν προς τα πλοία.','Η τελική αξιολόγηση είναι διαθέσιμη.'];
+ $('phaseTitle').textContent=state.phase===3&&state.rout?'Η φυγή προς τα πλοία':titles[state.phase];$('phaseText').textContent=state.phase===3&&state.rout?'Το περσικό κέντρο υποχωρεί προς την ακτή. Η ιστορική αφήγηση συνεχίζεται με καταδίωξη ως τα πλοία.':messages[state.phase];
+ $('chartCaption').textContent=[
+ 'Λεπτό κέντρο (οριζόντια γραμμή), ισχυρές πτέρυγες (δύο κατακόρυφα σκέλη): η διάταξη «Π».',
+ 'Οι δύο ισχυρές πτέρυγες προχωρούν πιο πολύ από το κέντρο: αρχίζει να φαίνεται το «Π».',
+ 'Το ελληνικό κέντρο υποχωρεί. Οι δύο πτέρυγες σχηματίζουν καθαρά το «Π».',
+ 'Οι δύο πτέρυγες επιτίθενται στο περσικό κέντρο από τα πλάγια!',
+ 'Η σύγκλιση των πτερύγων ολοκληρώθηκε.'
+ ][state.phase];
  $('selectionTitle').textContent=LANES.find(x=>x.id===state.selected).label+' · '+LANES.find(x=>x.id===state.selected).name;
  document.querySelectorAll('[data-lane]').forEach(b=>{b.classList.toggle('active',b.dataset.lane===state.selected);b.setAttribute('aria-pressed',b.dataset.lane===state.selected?'true':'false')});
  $('chargeBtn').disabled=state.mode!=='battle'||state.phase!==1||state.morale<16||state.charge>0||state.paused;
  $('shieldBtn').disabled=state.mode!=='battle'||state.phase===0||state.phase===4||state.morale<14||state.cooldown>0||state.shield>0||state.paused;
  $('supportBtn').disabled=state.mode!=='battle'||state.phase!==2||state.morale<23||state.paused;
  $('rallyBtn').disabled=state.mode!=='battle'||state.phase!==2||state.morale<21||state.center>=97||state.paused;
- $('envelopBtn').disabled=state.mode!=='battle'||state.phase!==2||state.right<55||state.left<55||state.paused;
- $('envelopBtn').textContent=state.phase===2&&state.right>=55&&state.left>=55?'✓ Σύγκλιση: οι πτέρυγες είναι έτοιμες!':'↘ ↗ Σύγκλιση των πτερύγων';
+ $('envelopBtn').disabled=state.mode!=='battle'||state.phase!==2||state.right<WING_TRIGGER||state.left<WING_TRIGGER||state.paused;
+ $('envelopBtn').textContent=state.phase===2&&state.right>=WING_TRIGGER&&state.left>=WING_TRIGGER?'✓ Στροφή πτερύγων — Επίθεση!':'↘ ↗ Σύγκλιση των πτερύγων';
  $('pauseBtn').hidden=state.mode!=='battle';$('pauseIcon').textContent=state.paused?'▶':'Ⅱ';$('pauseLabel').textContent=state.paused?' Συνέχεια':' Παύση';
 }
 function beep(kind='tap'){if(!state.sound)return;try{let c=state.soundCtx;if(!c)c=state.soundCtx=new (window.AudioContext||window.webkitAudioContext)();if(c.state==='suspended')c.resume();const o=c.createOscillator(),gain=c.createGain(),t=c.currentTime;o.type=kind==='bad'?'sawtooth':'sine';o.frequency.setValueAtTime(kind==='good'?625:kind==='bad'?190:360,t);o.frequency.exponentialRampToValueAtTime(kind==='good'?910:kind==='bad'?130:220,t+.16);gain.gain.setValueAtTime(.045,t);gain.gain.exponentialRampToValueAtTime(.001,t+.18);o.connect(gain);gain.connect(c.destination);o.start(t);o.stop(t+.19)}catch(e){}}
@@ -251,27 +270,42 @@ let resumeMode=null;
 function showModal(kicker,title,body,actions=[],closable=false){$('modalKicker').textContent=kicker;$('modalTitle').textContent=title;const el=$('modalBody');el.replaceChildren();if(typeof body==='string')el.innerHTML=body;else el.append(body);const slot=$('modalActions');slot.replaceChildren(...actions);close.hidden=!closable;modal.hidden=false}
 function hideModal(){modal.hidden=true;resumeMode=null}
 function openIntro(){state.mode='menu';state.phase=0;state.paused=false;updateStatus();showModal('490 π.Χ. · ΑΤΤΙΚΗ','ΜΑΡΑΘΩΝ: Η ΣΤΙΓΜΗ ΤΗΣ ΑΠΟΦΑΣΗΣ',
- `<p><b>Οι Αθηναίοι και οι Πλαταιείς</b> στέκονται απέναντι στις περσικές δυνάμεις. Στον Μαραθώνα, η επιτυχία θα εξαρτηθεί από τη συνοχή της φάλαγγας και τη σωστή στιγμή για τον ελιγμό των πτερύγων.</p>
- <h3>Διάλεξε διάταξη για τη φάλαγγα</h3><div class="choices"><button class="choice selected" id="formationWings"><b>Ενισχυμένες πτέρυγες</b><br><small>Ολιγόβαθο κέντρο — η διάταξη που αναφέρει ο Ηρόδοτος.</small></button><button class="choice" id="formationEqual"><b>Ομοιόμορφη παράταξη</b><br><small>Πιο σταθερό κέντρο, αλλά ασθενέστερες πτέρυγες.</small></button></div>
- <p class="note"><b>Αποστολή:</b> Προχώρησε, στήριξε τις πτέρυγες και ολοκλήρωσε τη σύγκλιση πριν καταρρεύσει η ελληνική γραμμή. Κατά τη μάχη θα εμφανιστούν ιστορικές ερωτήσεις.</p>`,
+ `<p><b>Οι Αθηναίοι και οι Πλαταιείς</b> στέκονται απέναντι στις περσικές δυνάμεις. Η απεικόνιση τις δείχνει σκόπιμα <b>πολυαριθμότερες</b>, σύμφωνα με την επικρατέστερη ιστορική εικόνα, χωρίς να ισχυρίζεται απόλυτη ακρίβεια στους αριθμούς. Στον Μαραθώνα, η επιτυχία θα εξαρτηθεί από τη συνοχή της φάλαγγας και τη σωστή στιγμή για τον ελιγμό των πτερύγων.</p>
+ <h3>Η παράταξη των Ελλήνων</h3><p><b>Η μάχη αρχίζει με την παράταξη που περιγράφει ο Ηρόδοτος:</b> μικρό βάθος στο κέντρο, ισχυρότερες πτέρυγες. Ο Καλλίμαχος βρίσκεται δεξιά και οι Πλαταιείς αριστερά. Δες στον χάρτη πώς μεταβάλλεται η γραμμή όταν το κέντρο υποχωρεί.</p>
+ <p class="note"><b>Αποστολή:</b> Προχώρησε με τη φάλαγγα, στήριξε τις πτέρυγες και ολοκλήρωσε την επίθεση στο περσικό κέντρο. Παρακολούθησε την περσική προέλαση και τη μεταγενέστερη φυγή προς την ακτή.</p>`,
  [btn('Πώς παίζεται',openGuide,true),btn('Στην πεδιάδα →',startGame)]);
- const left=$('formationWings'),right=$('formationEqual');state.formation='wings';
- left.onclick=()=>{state.formation='wings';left.classList.add('selected');right.classList.remove('selected')};right.onclick=()=>{state.formation='equal';right.classList.add('selected');left.classList.remove('selected')};
+
 }
 function openGuide(){if(state.mode==='quiz'){toast('Απάντησε πρώτα στην ιστορική ερώτηση.');return}const prev=state.mode;resumeMode=prev;state.paused=true;showModal('ΕΓΧΕΙΡΙΔΙΟ ΠΑΙΧΝΙΔΙΟΥ','Πώς παίζεται',`<ol>
- <li><b>Επίλεξε παράταξη.</b> Η ιστορική επιλογή δίνει ισχυρότερες πτέρυγες και ασθενέστερο κέντρο.</li>
+ <li><b>Δες την ιστορική παράταξη.</b> Η φάλαγγα έχει λεπτό κέντρο και βαθιές πτέρυγες. Δεν χρειάζεται να επιλέξεις σχηματισμό.</li>
  <li><b>Φάση 1 – Έφοδος.</b> Δώσε την εντολή «Ορμητική έφοδος» και σήκωσε τις ασπίδες ώστε η γραμμή να φτάσει στον εχθρό.</li>
  <li><b>Φάση 2 – Σύγκρουση.</b> Διάλεξε δεξιά ή αριστερή πτέρυγα (πατώντας στο πεδίο ή στα κουμπιά) και πάτησε «Ενίσχυση τμήματος». Με τη «Συσπείρωση κέντρου» αντιμετωπίζεις την πίεση στον κεντρικό σχηματισμό.</li>
- <li><b>Κρίσιμη κίνηση.</b> Όταν και οι δύο πτέρυγες φτάσουν τουλάχιστον στο <b>55%</b>, ενεργοποιείται η «Σύγκλιση των πτερύγων».</li>
- <li><b>Φάση 3 – Περικύκλωση.</b> Διατήρησε τη συνοχή και ολοκλήρωσε την αναστροφή προς το περσικό κέντρο.</li>
+ <li><b>Δες το «Π» πάνω στο πεδίο.</b> Το ελληνικό κέντρο μένει ρηχό και υποχωρεί, ενώ οι βαθιές πτέρυγες προχωρούν: δημιουργούν τα δύο σκέλη του «Π».</li><li><b>Κρίσιμη κίνηση.</b> Όταν και οι δύο πτέρυγες φτάσουν τουλάχιστον στο <b>60%</b>, ενεργοποιείται η «Σύγκλιση των πτερύγων». Παρατήρησε τις κινήσεις των πτερύγων καθώς επιτίθενται στο περσικό κέντρο από τα πλάγια.</li>
+ <li><b>Φάση 3 – Σύγκλιση.</b> Οι νικηφόρες πτέρυγες στρέφονται και χτυπούν το περσικό κέντρο από τις πλευρές. Στη συνέχεια οι Πέρσες υποχωρούν προς τα πλοία.</li>
  <li><b>Ιστορικά ερωτήματα.</b> Απάντησε στις ερωτήσεις ανάμεσα στις φάσεις για πρόσθετους βαθμούς και εντολές.</li></ol>
  <p class="note">Οι <b>εντολές</b> αποτελούν τον πόρο που καταναλώνουν οι ειδικές κινήσεις· ανανεώνονται σταδιακά. Οι πράσινες ασπίδες είναι ελληνικές, ενώ τα κόκκινα σύμβολα δηλώνουν τους Πέρσες. Μπορείς να πατήσεις «Παύση» οποιαδήποτε στιγμή.</p>`,[btn('Κατάλαβα',()=>{if(prev==='menu')openIntro();else if(prev==='result')reset();else{hideModal();state.paused=false;updateStatus()}})],false)}
-function openSources(){if(state.mode==='quiz'){toast('Απάντησε πρώτα στην ιστορική ερώτηση.');return}const prev=state.mode;state.paused=true;showModal('ΙΣΤΟΡΙΚΗ ΤΕΚΜΗΡΙΩΣΗ','Τι γνωρίζουμε για τον Μαραθώνα',`<div class="fact-grid"><div><b>Χρονολογία</b>490 π.Χ.</div><div><b>Αντίπαλοι</b>Αθηναίοι και Πλαταιείς εναντίον Περσών</div><div><b>Στρατηγική</b>Ισχυρές πτέρυγες και ολιγόβαθο κέντρο</div><div><b>Έκβαση</b>Ελληνική επικράτηση και καταδίωξη ως τα πλοία</div></div>
- <h3>Η αρχαία αφήγηση</h3><p>Ο Ηρόδοτος (VI, 111–115) αναφέρει τον Καλλίμαχο στη δεξιά πτέρυγα, τους Πλαταιείς στην αριστερή, την έφοδο τρέχοντας, την αρχική υποχώρηση του κέντρου και τη μεταγενέστερη σύγκλιση των πτερύγων.</p>
- <h3>Τεκμήρια και αρχαιολογία</h3><p>Ο Τύμβος των Αθηναίων και τα ευρήματα που εκτίθενται στο Αρχαιολογικό Μουσείο Μαραθώνα συνδέονται με τη μνήμη της σύγκρουσης.</p>
+function openPiGuide(){
+ if(state.mode==='quiz'){toast('Ολοκλήρωσε πρώτα την ιστορική ερώτηση.');return}
+ const prev=state.mode,wasPaused=state.paused;state.paused=true;
+ showModal('ΤΑΚΤΙΚΗ ΤΟΥ ΜΑΡΑΘΩΝΑ','Πώς σχηματίζεται το «Π»',`<div style="background:#e8e0c7;border:1px solid #bea77c;border-radius:12px;padding:8px;margin:8px 0">
+ <svg viewBox="0 0 560 255" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Εκπαιδευτικό σχέδιο: οι ελληνικές πτέρυγες σχηματίζουν τα δύο κατακόρυφα σκέλη του Π και το λεπτό κέντρο το επάνω οριζόντιο μέρος, ενώ τα δύο βέλη στρέφονται προς το περσικό κέντρο" style="width:100%;height:auto;display:block">
+ <rect width="560" height="255" rx="8" fill="#e3d4ad"/><g fill="none" stroke="#526d4c" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"><path d="M128 62 V168 M128 62 H430 M430 62 V168"/></g>
+ <g fill="#5b8365" stroke="#f1dba4" stroke-width="3"><circle cx="128" cy="168" r="17"/><circle cx="430" cy="168" r="17"/><circle cx="280" cy="62" r="15"/></g>
+ <g fill="none" stroke="#b66a40" stroke-width="6" stroke-linecap="round"><path d="M128 177 Q180 231 265 210"/><path d="M430 177 Q382 231 296 210"/></g><g fill="#b66a40"><path d="M268 212 l-15 -12 1 18Z"/><path d="M293 212 l15 -12 -1 18Z"/></g>
+ <ellipse cx="280" cy="213" rx="28" ry="17" fill="#a34e3b"/><text x="280" y="216" fill="#fff8e7" font-size="13" font-weight="bold" text-anchor="middle">Πέρσες</text>
+ <text x="128" y="29" fill="#355b40" font-size="15" font-weight="bold" text-anchor="middle">Δεξιά</text><text x="280" y="29" fill="#355b40" font-size="15" font-weight="bold" text-anchor="middle">Λεπτό κέντρο</text><text x="430" y="29" fill="#355b40" font-size="15" font-weight="bold" text-anchor="middle">Αριστερά</text>
+ </svg></div>
+ <ol><li><b>Αρχή:</b> ισχυρότερες και βαθύτερες πτέρυγες με ολιγόβαθο κέντρο.</li><li><b>Σύγκρουση:</b> το κέντρο υποχωρεί, ενώ οι πτέρυγες επικρατούν. Τότε, για να φανεί η κίνηση, σχηματίζεται το «Π».</li><li><b>Τελική κίνηση:</b> οι δύο νικηφόρες πτέρυγες στρέφονται στο περσικό κέντρο και συγκλίνουν.</li></ol>
+ <p class="note"><b>Ιστορική ακρίβεια:</b> το «Π» είναι σύγχρονη <b>σχηματική απεικόνιση</b> και όχι αρχαία ονομασία. Ο Ηρόδοτος περιγράφει ότι οι ισχυρότερες ελληνικές πτέρυγες επικράτησαν, στράφηκαν προς τα μέσα εναντίον του περσικού κέντρου και κατόπιν καταδίωξαν τους Πέρσες ως τα πλοία (ΣΤ΄ 111–115). Δεν τεκμηριώνεται πλήρης, κλειστή περικύκλωση όλων των Περσών. Η επιλογή της στιγμής της σύγκλισης από τον παίκτη είναι μηχανισμός παιχνιδιού και όχι καταγεγραμμένη διαταγή του Μιλτιάδη.</p>`,[btn('Επιστροφή στη μάχη',()=>{hideModal();if(prev==='battle'){state.paused=wasPaused;updateStatus()}else if(prev==='menu')openIntro();else {state.paused=wasPaused;updateStatus()}})],false);
+}
+$('piBtn').onclick=openPiGuide;
+function openSources(){if(state.mode==='quiz'){toast('Απάντησε πρώτα στην ιστορική ερώτηση.');return}const prev=state.mode;state.paused=true;showModal('ΙΣΤΟΡΙΚΗ ΤΕΚΜΗΡΙΩΣΗ','Τι γνωρίζουμε για τον Μαραθώνα',`<div class="fact-grid"><div><b>Χρονολογία</b>490 π.Χ.</div><div><b>Ελληνικές δυνάμεις</b>περ. 9.000 Αθηναίοι + 1.000 Πλαταιείς</div><div><b>Περσικές δυνάμεις</b>αβέβαιες · πιθανότατα περισσότερες, συχνά εκτιμώνται 20.000–25.000</div><div><b>Έκβαση</b>Ελληνική επικράτηση και καταδίωξη ως τα πλοία</div></div>
+ <h3>Η αρχαία αφήγηση</h3><p>Ο Ηρόδοτος (VI, 111–115) αναφέρει τον Καλλίμαχο στη δεξιά πτέρυγα, τους Πλαταιείς στην αριστερή, την έφοδο τρέχοντας, την αρχική επιτυχία των Περσών στο ελληνικό κέντρο και τη μεταγενέστερη στροφή των ελληνικών πτερύγων εναντίον του περσικού κέντρου.</p>
+ <h3>Ιστορική προσοχή</h3><p>Η εφαρμογή αποδίδει <b>ποιοτικά</b> την αριθμητική υπεροχή των Περσών, όχι με βέβαιη καταμέτρηση. Οι αριθμοί του περσικού στρατού παραμένουν αντικείμενο συζήτησης, ενώ συζητείται και η παρουσία ή μη του περσικού ιππικού στο πεδίο τη στιγμή της μάχης.</p>
+ <h3>Τεκμήρια και αρχαιολογία</h3><p>Ο Τύμβος των Αθηναίων και τα ευρήματα του Αρχαιολογικού Μουσείου Μαραθώνα συνδέονται άμεσα με τη μνήμη της σύγκρουσης και τους πεσόντες.</p>
  <h3>Επιλεγμένες πηγές</h3><ul><li><a target="_blank" rel="noopener" href="https://chs.harvard.edu/primary-source/herodotus-selections-part-ii/">Ηρόδοτος, Ιστορίαι, βιβλίο VI — Center for Hellenic Studies, Harvard</a></li><li><a target="_blank" rel="noopener" href="https://2500years.culture.gov.gr/en/chapters/i-machi-tou-marathona/kranos-lafiro">Υπουργείο Πολιτισμού — Η μάχη του Μαραθώνα</a></li><li><a target="_blank" rel="noopener" href="https://archaeologicalmuseums.culture.gov.gr/en/museum/5df34af3deca5e2d79e8c18a/archaeological-museum-of-marathon">Αρχαιολογικό Μουσείο Μαραθώνα</a></li><li><a target="_blank" rel="noopener" href="https://academic.oup.com/edited-volume/61673/chapter-abstract/549651309">Oxford Classical Dictionary — Marathon, battle of</a></li></ul>
- <p class="note">Οι ιστορικοί συζητούν επιμέρους ζητήματα της σύγκρουσης, όπως τον ακριβή αριθμό των πολεμιστών και την παρουσία ή μη του περσικού ιππικού στο πεδίο.</p>`,[btn('Επιστροφή στο παιχνίδι',()=>{if(prev==='menu')openIntro();else if(prev==='result')reset();else{hideModal();state.paused=false;updateStatus()}})],false)}
-function reset(){state.mode='menu';state.phase=0;state.formation='wings';state.selected='right';state.morale=75;state.score=0;state.right=0;state.left=0;state.center=100;state.advance=0;state.closing=0;state.persian=100;state.shield=0;state.charge=0;state.cooldown=0;state.phaseTime=0;state.time=0;state.answers=0;state.answered=0;state.asked=[];state._readyShown=false;state.question=null;state.questionNext=null;state.paused=false;state.ended=false;state.marks=[];logs.length=0;$('toast').hidden=true;toastTimer=0;updateLog('Οι δύο στρατοί βρίσκονται αντιμέτωποι.');updateStatus();openIntro()}
+ <p class="note">Το «Π» είναι εκπαιδευτική απεικόνιση, όχι ιστορική ονομασία. Ο Ηρόδοτος αναφέρει πλήγμα από τις δύο πτέρυγες και περσική φυγή προς τα πλοία, όχι κλειστό αποκλεισμό όλων των Περσών. Ο ακριβής αριθμός των περσικών δυνάμεων παραμένει αβέβαιος. Κάθε σύμβολο στον χάρτη αντιπροσωπεύει ομάδα και όχι έναν μεμονωμένο πολεμιστή. Το κουμπί της σύγκλισης προσφέρει παικτική παρέμβαση, δεν αναπαριστά βέβαιη ιστορική διαταγή.</p>`,[btn('Επιστροφή στο παιχνίδι',()=>{if(prev==='menu')openIntro();else if(prev==='result')reset();else{hideModal();state.paused=false;updateStatus()}})],false)}
+function reset(){state.mode='menu';state.phase=0;state.formation='wings';state.selected='right';state.rout=false;state.routTime=0;state.morale=75;state.score=0;state.right=0;state.left=0;state.center=100;state.advance=0;state.closing=0;state.persian=100;state.shield=0;state.charge=0;state.cooldown=0;state.phaseTime=0;state.time=0;state.answers=0;state.answered=0;state.asked=[];state._readyShown=false;state.question=null;state.questionNext=null;state.paused=false;state.ended=false;state.marks=[];logs.length=0;$('toast').hidden=true;toastTimer=0;updateLog('Οι δύο στρατοί βρίσκονται αντιμέτωποι.');updateStatus();openIntro()}
 function confirmReset(){
  if(state.mode==='menu'){reset();return}
  const oldPaused=state.paused;
@@ -300,14 +334,14 @@ function confirmReset(){
   '<p>Να επιστρέψεις στην αρχική οθόνη; Η τρέχουσα πρόοδος, οι βαθμοί και οι απαντήσεις θα μηδενιστούν.</p>',
   [btn('Ακύρωση',cancelReset,true),btn('↻ Αρχικοποίηση',reset)],false);
 }
-function startGame(){state.mode='battle';state.phase=1;state.phaseTime=0;state.advance=0;state.center=state.formation==='wings'?78:97;state.morale=75;state.right=state.formation==='wings'?18:6;state.left=state.formation==='wings'?18:6;hideModal();updateLog('Ο Μιλτιάδης δίνει το σύνθημα. Η ελληνική φάλαγγα ξεκινά!');toast('Σήκωσε τις ασπίδες και επιτάχυνε την έφοδο.');beep('good');updateStatus()}
+function startGame(){state.mode='battle';state.phase=1;state.phaseTime=0;state.advance=0;state.rout=false;state.routTime=0;state.center=78;state.morale=75;state.right=18;state.left=18;hideModal();updateLog('Η παράταξη του Μαραθώνα έχει ήδη σχηματιστεί. Η ελληνική φάλαγγα ξεκινά!');toast('Σήκωσε τις ασπίδες και επιτάχυνε την έφοδο.');beep('good');updateStatus()}
 function selectLane(id){if(!LANES.some(x=>x.id===id))return;state.selected=id;beep();updateStatus()}
 document.querySelectorAll('[data-lane]').forEach(b=>b.addEventListener('click',()=>selectLane(b.dataset.lane)));
 $('chargeBtn').onclick=()=>{if(state.phase!==1||state.morale<16||state.charge>0||state.paused)return;state.morale-=16;state.charge=5;state.advance=clamp(state.advance+12,0,100);state.score+=30;beep('good');toast('Ορμητική έφοδος! Η φάλαγγα καλύπτει γρήγορα την απόσταση.');updateLog('Η ελληνική έφοδος επιταχύνεται.');updateStatus()};
 $('shieldBtn').onclick=()=>{if(state.mode!=='battle'||state.shield>0||state.cooldown>0||state.morale<14||state.paused)return;state.morale-=14;state.shield=6;state.cooldown=13;state.score+=20;beep();toast('Οι ασπίδες υψώνονται. Η ελληνική γραμμή προστατεύεται.');updateStatus()};
 $('supportBtn').onclick=()=>{if(state.phase!==2||state.morale<23||state.paused)return;state.morale-=23;if(state.selected==='center'){state.center=clamp(state.center+11,0,100);toast('Το κέντρο ενισχύθηκε προσωρινά.')}else{state[state.selected]=clamp(state[state.selected]+16,0,100);toast('Ενισχύθηκε η '+(state.selected==='right'?'δεξιά':'αριστερή')+' πτέρυγα!')}state.score+=35;beep('good');updateStatus()};
 $('rallyBtn').onclick=()=>{if(state.phase!==2||state.morale<21||state.paused||state.center>=97)return;state.morale-=21;state.center=clamp(state.center+19,0,100);state.score+=20;beep('good');toast('Οπλίτες συσπειρώνονται και συγκρατούν την πίεση στο κέντρο.');updateStatus()};
-$('envelopBtn').onclick=()=>{if(state.phase!==2||state.right<55||state.left<55||state.paused)return;showQuiz(()=>{state.phase=3;state.phaseTime=0;state.closing=0;state.persian=100;state.score+=200;state._readyShown=false;beep('good');updateLog('Οι δύο πτέρυγες στρέφονται προς το περσικό κέντρο!');toast('Η σύγκλιση άρχισε. Κράτησε τη συνοχή μέχρι την ολοκλήρωσή της.');updateStatus()})};
+$('envelopBtn').onclick=()=>{if(state.phase!==2||state.right<WING_TRIGGER||state.left<WING_TRIGGER||state.paused)return;showQuiz(()=>{state.phase=3;state.phaseTime=0;state.closing=0;state.persian=100;state.rout=false;state.routTime=0;state.score+=200;state._readyShown=false;beep('good');updateLog('Οι δύο πτέρυγες στρέφονται και αρχίζουν να εγκλωβίζουν το περσικό κέντρο!');toast('Τώρα οι πτέρυγες στρέφονται προς τα μέσα: το περσικό κέντρο συμπιέζεται ανάμεσά τους.');updateStatus()})};
 function sampleQuestion(){const open=QUESTIONS.map((q,i)=>i).filter(i=>!state.asked.includes(i));const id=open[Math.floor(Math.random()*open.length)];state.asked.push(id);return QUESTIONS[id]}
 function showQuiz(next){state.mode='quiz';state.questionNext=next;state.question=sampleQuestion();state.answered++;const q=state.question;
  const box=document.createElement('div');box.innerHTML='<p>Οι επιλογές σου στο πεδίο θα συνδεθούν και με την ιστορική γνώση.</p><p><b>'+q.q+'</b></p>';const list=document.createElement('div');list.className='choices';list.id='choices';box.append(list);
@@ -316,18 +350,18 @@ function showQuiz(next){state.mode='quiz';state.questionNext=next;state.question
  q.opts.forEach((answer,i)=>{const b=document.createElement('button');b.className='choice';b.textContent=answer;b.onclick=()=>{if(!cont.disabled)return;for(const [j,x] of [...list.children].entries()){x.disabled=true;if(j===q.a)x.classList.add('correct')}if(i!==q.a)b.classList.add('incorrect');const good=i===q.a;if(good){state.answers++;state.score+=150;state.morale=clamp(state.morale+24,0,100);beep('good')}else beep('bad');explain.textContent=(good?'Σωστά! ':'Η σωστή απάντηση είναι: '+q.opts[q.a]+'. ')+q.why;cont.disabled=false;updateStatus()};list.append(b)});
  state.paused=true;showModal('ΙΣΤΟΡΙΚΗ ΔΟΚΙΜΑΣΙΑ · '+state.answered+'/3','Η γνώση αλλάζει τη μάχη',box,[cont],false);
 }
-function win(){if(state.ended)return;state.ended=true;state.mode='result';state.phase=4;state.score+=Math.round(state.center*4+state.right+state.left);beep('good');updateStatus();showModal('490 π.Χ. · ΤΕΛΟΣ ΜΑΧΗΣ','Η ελληνική φάλαγγα επικράτησε!',`<p>Οι ελληνικές πτέρυγες πέτυχαν τη σύγκλιση και το περσικό κέντρο υποχώρησε προς τα πλοία. Ο Μαραθώνας έμεινε στη μνήμη ως σημαντική νίκη των Αθηναίων και των Πλαταιέων.</p><div class="fact-grid"><div><b>Συνολικοί βαθμοί</b><span class="resultnum">${n(state.score)}</span></div><div><b>Ιστορικές απαντήσεις</b><span class="resultnum">${state.answers}/${state.answered}</span></div><div><b>Συνοχή κέντρου</b><span class="resultnum">${n(state.center)}%</span></div><div><b>Επιλεγμένη διάταξη</b>${state.formation==='wings'?'Ενισχυμένες πτέρυγες':'Ομοιόμορφη παράταξη'}</div></div><p class="note">Στην αρχαία αφήγηση, οι νικηφόρες ελληνικές πτέρυγες στράφηκαν εναντίον του περσικού κέντρου. Η καταδίωξη έφτασε μέχρι τα πλοία στην ακτή.</p>`,[btn('Ιστορικά στοιχεία',openSources,true),btn('Νέο παιχνίδι',reset)],false)}
+function win(){if(state.ended)return;state.ended=true;state.mode='result';state.phase=4;state.score+=Math.round(state.center*4+state.right+state.left);beep('good');updateStatus();showModal('490 π.Χ. · ΤΕΛΟΣ ΜΑΧΗΣ','Η ελληνική φάλαγγα επικράτησε!',`<p>Οι ελληνικές πτέρυγες επικράτησαν, στράφηκαν εναντίον του περσικού κέντρου και το ανάγκασαν να υποχωρήσει. Ακολούθησε καταδίωξη έως τα περσικά πλοία. Ο Μαραθώνας έμεινε στη μνήμη ως σημαντική νίκη των Αθηναίων και των Πλαταιέων.</p><div class="fact-grid"><div><b>Συνολικοί βαθμοί</b><span class="resultnum">${n(state.score)}</span></div><div><b>Ιστορικές απαντήσεις</b><span class="resultnum">${state.answers}/${state.answered}</span></div><div><b>Συνοχή κέντρου</b><span class="resultnum">${n(state.center)}%</span></div><div><b>Ιστορική παράταξη</b>Ολιγόβαθο κέντρο · ενισχυμένες πτέρυγες</div></div><p class="note">Στην αρχαία αφήγηση, οι νικηφόρες ελληνικές πτέρυγες στράφηκαν εναντίον του περσικού κέντρου. Η καταδίωξη έφτασε μέχρι τα πλοία στην ακτή.</p>`,[btn('Ιστορικά στοιχεία',openSources,true),btn('Νέο παιχνίδι',reset)],false)}
 function lose(){if(state.ended)return;state.ended=true;state.mode='result';beep('bad');updateStatus();showModal('ΑΠΟΤΕΛΕΣΜΑ ΤΗΣ ΑΠΟΣΤΟΛΗΣ','Η παράταξη διασπάστηκε',`<p>Η συνοχή του ελληνικού κέντρου μειώθηκε πριν ολοκληρωθεί ο ελιγμός των πτερύγων. Μπορείς να δοκιμάσεις ξανά, προστατεύοντας καλύτερα το κέντρο και ενεργοποιώντας νωρίτερα τη σύγκλιση.</p><div class="fact-grid"><div><b>Βαθμοί</b><span class="resultnum">${n(state.score)}</span></div><div><b>Ιστορικές απαντήσεις</b><span class="resultnum">${state.answers}/${state.answered}</span></div></div><p class="note">Δοκίμασε την ενισχυμένη διάταξη πτερύγων και χρησιμοποίησε τη «Συσπείρωση κέντρου» για να κερδίσεις χρόνο.</p>`,[btn('Νέα προσπάθεια',reset)],false)}
-function phaseTwo(){state.phase=2;state.phaseTime=0;state.morale=clamp(state.morale+18,0,100);updateLog('Η σύγκρουση αρχίζει! Το ελληνικό κέντρο δέχεται ισχυρή πίεση.');showQuiz(()=>{toast('Ενίσχυσε δεξιά και αριστερή πτέρυγα. Παρακολούθησε το κέντρο!');updateStatus()})}
+function phaseTwo(){state.phase=2;state.phaseTime=0;state.morale=clamp(state.morale+18,0,100);updateLog('Η σύγκρουση αρχίζει! Το κέντρο κάμπτεται, ενώ οι πτέρυγες διαμορφώνουν το «Π» απέναντι στους περισσότερους Πέρσες.');showQuiz(()=>{toast('Δες το «Π»: οι πτέρυγες προχωρούν και το κέντρο υποχωρεί. Ενίσχυσε και τις δύο!');updateStatus()})}
 function phaseThreeDone(){showQuiz(()=>win())}
 function simulate(dt){if(state.mode!=='battle'||state.paused||!modal.hidden)return;state.time+=dt;state.phaseTime+=dt;state.morale=clamp(state.morale+3*dt,0,100);state.shield=Math.max(0,state.shield-dt);state.charge=Math.max(0,state.charge-dt);state.cooldown=Math.max(0,state.cooldown-dt);
  if(state.phase===1){state.advance=clamp(state.advance+dt*(state.charge>0?8.5:4.2),0,100);state.center=clamp(state.center-dt*(state.shield>0?.11:.32),0,100);if(state.advance>=100){phaseTwo();return}}
- else if(state.phase===2){const factor=state.formation==='wings'?1.13:.84;state.right=clamp(state.right+dt*1.22*factor,0,100);state.left=clamp(state.left+dt*1.14*factor,0,100);state.center=clamp(state.center-dt*(state.shield>0?.19:.62),0,100);if(state.phaseTime>33&&Math.floor(state.phaseTime)%10===0&&Math.floor(state.phaseTime-dt)%10!==Math.floor(state.phaseTime)){updateLog('Οι πτέρυγες πιέζουν, αλλά το κέντρο χρειάζεται στήριξη.')}}
- else if(state.phase===3){state.closing=clamp(state.closing+dt*(state.formation==='wings'?4.2:3.6),0,100);state.persian=clamp(100-state.closing,0,100);state.center=clamp(state.center-dt*(state.shield>0?.05:.22),0,100);if(state.closing>=100){phaseThreeDone();return}}
+ else if(state.phase===2){state.right=clamp(state.right+dt*1.22*1.13,0,100);state.left=clamp(state.left+dt*1.14*1.13,0,100);state.center=clamp(state.center-dt*(state.shield>0?.19:.62),0,100);if(state.phaseTime>33&&Math.floor(state.phaseTime)%10===0&&Math.floor(state.phaseTime-dt)%10!==Math.floor(state.phaseTime)){updateLog('Οι πτέρυγες πιέζουν, αλλά το κέντρο χρειάζεται στήριξη.')}}
+ else if(state.phase===3){if(!state.rout){state.closing=clamp(state.closing+dt*5.8,0,100);state.persian=clamp(100-state.closing,0,100);state.center=clamp(state.center-dt*(state.shield>0?.05:.22),0,100);if(state.closing>=100){state.rout=true;state.routTime=0;beep('good');updateLog('Το περσικό κέντρο υποχωρεί προς τη θάλασσα. Οι Έλληνες καταδιώκουν τους φυγάδες.');toast('Οι Πέρσες υποχωρούν προς την ακτή και τα πλοία.');}}else{state.routTime+=dt;state.persian=clamp(20-state.routTime*2.8,0,100);if(state.routTime>=7){phaseThreeDone();return}}}
  if(state.center<=1){lose();return}
- if(state.right>=55&&state.left>=55&&state.phase===2&&!state._readyShown){state._readyShown=true;beep('good');toast('Οι δύο πτέρυγες είναι έτοιμες! Πάτησε «Σύγκλιση».');updateLog('Οι νικηφόρες πτέρυγες μπορούν τώρα να στραφούν προς το κέντρο.')}
+ if(state.right>=WING_TRIGGER&&state.left>=WING_TRIGGER&&state.phase===2&&!state._readyShown){state._readyShown=true;beep('good');toast('Οι δύο πτέρυγες είναι έτοιμες! Τώρα μπορεί να ξεκινήσει ο εγκλωβισμός.');updateLog('Οι νικηφόρες πτέρυγες μπορούν τώρα να στραφούν και να εγκλωβίσουν το περσικό κέντρο.')}
 }
-function resize(){const r=board.getBoundingClientRect();dpr=Math.min(window.devicePixelRatio||1,2);drawW=r.width;drawH=r.height;board.width=Math.max(1,Math.round(drawW*dpr));board.height=Math.max(1,Math.round(drawH*dpr));scale=(drawW/drawH>1.9?Math.max(drawW/W,drawH/H):Math.min(drawW/W,drawH/H));ox=(drawW-W*scale)/2;oy=(drawH-H*scale)/2}
+function resize(){const r=board.getBoundingClientRect();dpr=Math.min(window.devicePixelRatio||1,2);drawW=r.width;drawH=r.height;board.width=Math.max(1,Math.round(drawW*dpr));board.height=Math.max(1,Math.round(drawH*dpr));scale=Math.min(drawW/830,drawH/560);ox=drawW/2-500*scale;oy=drawH/2-350*scale}
 window.addEventListener('resize',resize);new ResizeObserver(resize).observe(stage);resize();
 const colors={greek:'#4b765f',bronze:'#e1c78c',persian:'#9e4d3e',tunic:'#c15e3f'};
 function stamp(x,y,str,fill='#fff8df',size=14){ctx.save();ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=`bold ${size}px Georgia, serif`;ctx.lineWidth=3;ctx.strokeStyle='rgba(41,35,27,.7)';ctx.strokeText(str,x,y);ctx.fillStyle=fill;ctx.fillText(str,x,y);ctx.restore()}
@@ -340,44 +374,153 @@ function drawHoplite(x,y,sc=1,selected=false,row=0){ctx.save();ctx.translate(x,y
  ctx.fillStyle='#d5a85d';ctx.fillRect(-11,-18,14,10);ctx.fillStyle=row%2===0?'#a84e36':'#765641';ctx.beginPath();ctx.moveTo(-13,-18);ctx.quadraticCurveTo(-4,-34,6,-20);ctx.lineTo(0,-16);ctx.closePath();ctx.fill();ctx.restore()}
 function drawPersian(x,y,sc=1,row=0){ctx.save();ctx.translate(x,y+Math.sin(state.time*3.1+x*.15)*.7);ctx.scale(sc,sc);ctx.fillStyle='#4531297a';ctx.beginPath();ctx.ellipse(0,14,13,5,0,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#432821';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-8,7);ctx.lineTo(-10,19);ctx.moveTo(5,7);ctx.lineTo(8,19);ctx.stroke();ctx.fillStyle=row%3===0?'#a54c3c':'#b07746';ctx.fillRect(-8,-8,16,18);ctx.fillStyle='#c5a777';ctx.fillRect(-4,-16,12,8);ctx.fillStyle='#6f3532';ctx.beginPath();ctx.moveTo(-6,-15);ctx.lineTo(8,-16);ctx.lineTo(2,-24);ctx.closePath();ctx.fill();
  ctx.strokeStyle='#5d3c25';ctx.lineWidth=2;ctx.beginPath();ctx.arc(-8,-1,12,-Math.PI*.63,Math.PI*.64);ctx.stroke();ctx.strokeStyle='#d6ba78';ctx.beginPath();ctx.moveTo(-18,-12);ctx.lineTo(-16,10);ctx.stroke();ctx.restore()}
-function drawGroup(lane,isGreek){const isRight=lane.id==='right',isCenter=lane.id==='center',pos=LANES.indexOf(lane),y=lane.y;
- let x=isGreek?260:684,advanceShift=state.phase===1?state.advance*2.15:state.phase>=2?220:0;
- if(isGreek){x+=advanceShift;if(state.phase===2){x+=lane.id==='center'?-26+Math.min(30,state.phaseTime*.65):state[lane.id]*1.17}if(state.phase===3){x+=60+state.closing*.8;}}
- else if(state.phase===3){x+=state.closing*.35}
- const shiftY=state.phase===3&&isGreek?lane.id==='right'?state.closing*.93:lane.id==='left'?-state.closing*.93:0:0;
- const rows=isGreek?(isCenter?(state.formation==='wings'?2:3):(state.formation==='wings'?4:3)):3;
- for(let r=0;r<rows;r++)for(let c=0;c<(isGreek?5:5);c++){
-  const dx=isGreek?-(c*20):c*19;
-  const dy=(r-(rows-1)/2)*17;
-  if(isGreek)drawHoplite(x+dx,y+dy+shiftY,.74,state.selected===lane.id,r);
-  else drawPersian(x+dx,y+dy,.8,r);
+function greekPosition(lane){
+ const x=lane.id==='right'?292:lane.id==='center'?500:708;
+ const p=state.phase;
+ if(lane.id==='center'){
+  // After the enemy breaks through, the weak Greek centre yields inland (north on the map).
+  const y=p===0?295:p===1?295+state.advance*.31:p===2?326-Math.min(63,state.phaseTime*2.1):274;
+  return {x,y};
  }
- if(isGreek){if(state.selected===lane.id&&state.mode==='battle'){
- ctx.save();ctx.strokeStyle='#fff3bf';ctx.lineWidth=2;ctx.setLineDash([5,6]);ctx.beginPath();ctx.ellipse(x-45,y+shiftY,103,49,0,0,Math.PI*2);ctx.stroke();ctx.restore()}
- stamp(x-43,y-65+shiftY,lane.id==='right'?'ΔΕΞΙΑ · ΚΑΛΛΙΜΑΧΟΣ':lane.id==='left'?'ΑΡΙΣΤΕΡΑ · ΠΛΑΤΑΙΕΙΣ':'ΑΘΗΝΑΪΚΟ ΚΕΝΤΡΟ','#fffbe2',lane.id==='center'?12:11);
- }else{stamp(x+38,y-62,'ΠΕΡΣΙΚΗ ΓΡΑΜΜΗ','#ffe3d6',11)}
+ const strength=state[lane.id]||0;
+ const y=p===0?295:p===1?295+state.advance*1.28:p===2?422+strength*.24:p>=3?436+Math.min(23,state.closing*.18):295;
+ const inward=p===3?Math.min(1,state.closing/100)*.74:0;
+ return {x:x+(500-x)*inward,y};
 }
-function drawArrows(){const frame=state.time*1.8;const greekX=state.phase===1?260+state.advance*2.15:state.phase===2?490:state.phase===3?590+state.closing*.65:260;
- ctx.save();ctx.strokeStyle='rgba(85,55,35,.78)';ctx.lineWidth=2.2;for(let i=0;i<9;i++){let t=(frame*.6+i*.133)%1;const x=650-(650-greekX)*t,y=[235,350,465][i%3]+Math.sin(i*4.2)*21-(Math.sin(Math.PI*t)*55);if((i+Math.floor(frame))%5===0)continue;ctx.save();ctx.translate(x,y);ctx.rotate(Math.PI-.12);ctx.beginPath();ctx.moveTo(-12,0);ctx.lineTo(8,0);ctx.stroke();ctx.fillStyle='#d3d6cb';ctx.beginPath();ctx.moveTo(8,0);ctx.lineTo(2,-4);ctx.lineTo(2,4);ctx.closePath();ctx.fill();ctx.restore()}
- ctx.restore();}
-function drawEffects(){if(state.shield>0){ctx.save();ctx.fillStyle='rgba(112,186,154,.12)';ctx.strokeStyle='rgba(233,251,217,.78)';ctx.lineWidth=3;ctx.setLineDash([8,7]);ctx.beginPath();ctx.ellipse(410,349,220,210,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.restore()}
- if(state.phase===1){ctx.save();ctx.strokeStyle='#f6ead0';ctx.lineWidth=5;ctx.setLineDash([14,11]);ctx.beginPath();ctx.moveTo(270,350);ctx.lineTo(610,350);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='#f6ead0';ctx.beginPath();ctx.moveTo(615,350);ctx.lineTo(592,338);ctx.lineTo(592,362);ctx.closePath();ctx.fill();ctx.restore()}
- if(state.phase===3){ctx.save();ctx.strokeStyle='#e9e4c6';ctx.lineWidth=6;ctx.setLineDash([12,10]);ctx.beginPath();ctx.moveTo(560,252);ctx.quadraticCurveTo(710,255,670,350);ctx.moveTo(565,452);ctx.quadraticCurveTo(710,445,670,350);ctx.stroke();ctx.restore()}
+function drawGroup(lane,isGreek){
+ const {x,y}=isGreek?greekPosition(lane):{x:lane.id==='right'?292:lane.id==='center'?500:708,y:479};
+ const side=lane.id!=='center';
+ if(isGreek){
+  const historical=true;
+  // The narrow center stretches across the crosspiece; deep wings project toward the Persian line.
+  const rows=side?(historical?7:4):(historical?2:3),cols=side?(historical?4:5):(historical?15:11);
+  const sx=side?18:historical?24:21,sy=side?19:18;
+  ctx.save();
+  if(state.mode==='battle'&&state.selected===lane.id){ctx.fillStyle='rgba(240,224,153,.17)';ctx.strokeStyle='#f7eac1';ctx.lineWidth=2;ctx.setLineDash([6,6]);ctx.beginPath();ctx.roundRect(x-(cols-1)*sx/2-23,y-(rows-1)*sy-18,(cols-1)*sx+46,(rows-1)*sy+42,18);ctx.fill();ctx.stroke()}
+  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
+   const px=x+(c-(cols-1)/2)*sx,py=y-r*sy;
+   const turn=side&&state.phase===3?(lane.id==='right'?1:-1)*Math.min(1,state.closing/100)*.38:0;
+   const dx=px-x,dy=py-y,fx=x+dx*Math.cos(turn)-dy*Math.sin(turn),fy=y+dx*Math.sin(turn)+dy*Math.cos(turn);
+   ctx.save();ctx.translate(fx,fy);ctx.rotate(Math.PI*.48+turn*.8);drawHoplite(0,0,side?.62:.53,state.selected===lane.id,r);ctx.restore();
+  }
+  ctx.restore();
+  const legend=lane.id==='right'?'ΔΕΞΙΟ ΚΕΡΑΣ · ΚΑΛΛΙΜΑΧΟΣ':lane.id==='left'?'ΑΡΙΣΤΕΡΟ ΚΕΡΑΣ · ΠΛΑΤΑΙΕΙΣ':'ΟΛΙΓΟΒΑΘΟ ΚΕΝΤΡΟ';
+  stamp(x,Math.max(184,y-(rows-1)*sy-36),legend,'#fff5d6',side?12:13);
+ }else{
+  // One sprite represents a troop group, not a one-to-one historical casualty or soldier count.
+  // These troops physically move: centre advances through the gap, flanks recoil, then centre is struck from both sides and escapes.
+  const px0=lane.id==='right'?292:lane.id==='center'?500:708;
+  const p=state.phase,adv=state.advance/100,wingPower=Math.max(0,(state[lane.id]-18)/82);
+  const squeeze=p===3?state.closing/100:0;
+  const flee=p===3&&state.rout?Math.min(1,state.routTime/7):0;
+  let pxBase=px0,pyBase=478;
+  if(p===1){pyBase=478-adv*(side?44:66);}
+  if(p===2){
+   if(side){pxBase=px0+(lane.id==='right'?-70:70)*wingPower;pyBase=434+48*wingPower;}
+   else{pyBase=412-Math.min(91,state.phaseTime*4.1);}
+  }
+  if(p===3){
+   if(side){
+    // Routed Persian wings move out of the central engagement toward the open field/coast.
+    pxBase=px0+(lane.id==='right'?-102:91)*(0.35+0.65*squeeze);
+    pyBase=480+24*squeeze;
+   }else{
+    // The successful Persian centre is caught between converging Greek wings.
+    pyBase=324+20*squeeze;
+    pxBase=500;
+    // After the wing attack, survivors stream eastward toward the shore and the ships.
+    if(state.rout){pxBase+=258*flee;pyBase+=90*flee;}
+   }
+  }
+  ctx.save();
+  ctx.globalAlpha=side?(p===3?Math.max(.08,1-squeeze*.78):1):1;
+  const cols=side?9:14,rows=side?5:7;
+  const stepX=(side?14.5:13.8)*(1-(side?.09:.32)*squeeze);
+  const stepY=(side?14:12.5)*(1-(side?.06:.15)*squeeze);
+  // Slight per-rank movement and an unfolding escape so the bodies, not just labels, visibly move.
+  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
+   let x1=pxBase+(c-(cols-1)/2)*stepX,y1=pyBase+r*stepY;
+   if(p===3&&state.rout&&!side){x1+=(c%4)*flee*20;y1+=(r%3)*flee*8;}
+   if(p===3&&side){x1+=(c%3)*squeeze*4;}
+   const drift=Math.sin(state.time*2.8+r*1.2+c*.64)*1.35;
+   ctx.save();ctx.translate(x1+drift,y1+Math.sin(state.time*3+r+c)*.9);
+   ctx.rotate(-Math.PI*.48+(p===3&&!side?flee*1.0:0));
+   drawPersian(0,0,side?.55:.56,r);ctx.restore();
+  }
+  ctx.restore();
+  if(state.phase===3&&state.rout&&!side){
+   ctx.save();ctx.strokeStyle='rgba(255,243,210,.85)';ctx.setLineDash([9,7]);ctx.lineWidth=4;
+   ctx.beginPath();ctx.moveTo(600,416);ctx.quadraticCurveTo(701,433,865,495);ctx.stroke();ctx.setLineDash([]);
+   arrowHead(866,496,.24,'#fff0bb');ctx.restore();
+  }
+  if(!(side&&p===3&&squeeze>.4)){
+   let label=side?'ΠΕΡΣΙΚΗ ΠΤΕΡΥΓΑ':'ΠΕΡΣΙΚΟ ΚΕΝΤΡΟ';
+   if(!side&&p===2)label='ΠΕΡΣΕΣ ΚΑΙ ΣΑΚΕΣ ΠΡΟΕΛΑΥΝΟΥΝ';
+   if(!side&&p===3)label=state.rout?'ΥΠΟΧΩΡΗΣΗ ΠΡΟΣ ΤΑ ΠΛΟΙΑ':'ΠΕΡΣΙΚΟ ΚΕΝΤΡΟ ΥΠΟ ΠΛΕΥΡΙΚΗ ΕΠΙΘΕΣΗ';
+   stamp(Math.min(850,pxBase),Math.min(579,pyBase+rows*stepY+10),label,'#fff0d7',side?10:11);
+  }
+ }
+}
+function drawArrows(){
+ const t=state.time*1.2;
+ ctx.save();ctx.strokeStyle='rgba(81,55,33,.88)';ctx.lineWidth=2;
+ for(let i=0;i<12;i++){
+  const f=(t*.34+i*.123)%1,px=290+(i%3)*210+Math.sin(i*3.7)*19;
+  const y=460-175*f-34*Math.sin(f*Math.PI);
+  if((i+Math.floor(t))%6===0)continue;
+  ctx.save();ctx.translate(px,y);ctx.rotate(-Math.PI/2);
+  ctx.beginPath();ctx.moveTo(-9,0);ctx.lineTo(11,0);ctx.stroke();ctx.fillStyle='#e6e0cf';ctx.beginPath();ctx.moveTo(11,0);ctx.lineTo(4,-4);ctx.lineTo(4,4);ctx.closePath();ctx.fill();ctx.restore();
+ }
+ ctx.restore();
+}
+function arrowHead(x,y,angle,color){ctx.save();ctx.translate(x,y);ctx.rotate(angle);ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-19,-10);ctx.lineTo(-19,10);ctx.closePath();ctx.fill();ctx.restore()}
+function drawEffects(){
+ // Draw the original historical logic as a Pi-like formation: center held back, robust wings advancing.
+ if(state.phase>=1){
+  const development=state.phase===1?state.advance/100:1;
+  ctx.save();ctx.strokeStyle='rgba(42,99,65,.55)';ctx.lineWidth=16;ctx.lineCap='round';ctx.lineJoin='round';ctx.setLineDash([3,11]);
+  const right=greekPosition(LANES[0]),left=greekPosition(LANES[2]),mid=greekPosition(LANES[1]);
+  const leftX=right.x,rightX=left.x,topY=Math.min(310,mid.y+8),tipY=Math.max(topY+20,Math.min(right.y,left.y)-12);
+  ctx.beginPath();ctx.moveTo(leftX,tipY);ctx.lineTo(leftX,topY);ctx.lineTo(rightX,topY);ctx.lineTo(rightX,tipY);ctx.stroke();
+  ctx.setLineDash([]);ctx.lineWidth=2.5;ctx.strokeStyle='rgba(250,243,200,.80)';ctx.stroke();ctx.restore();
+  if(state.phase===2){ctx.save();ctx.fillStyle='rgba(35,69,48,.84)';ctx.beginPath();ctx.roundRect(380,174,240,42,12);ctx.fill();ctx.restore();stamp(500,194,'ΤΟ ΣΧΗΜΑ «Π»','#fff2bc',18);}
+ }
+ if(state.shield>0){ctx.save();ctx.fillStyle='rgba(112,186,154,.08)';ctx.strokeStyle='rgba(228,251,217,.54)';ctx.lineWidth=2.5;ctx.setLineDash([8,7]);ctx.beginPath();ctx.ellipse(500,330,290,180,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.restore()}
+ if(state.phase===1){ctx.save();ctx.strokeStyle='#fff5cb';ctx.lineWidth=5;ctx.setLineDash([14,11]);ctx.beginPath();ctx.moveTo(500,345);ctx.lineTo(500,426);ctx.stroke();ctx.setLineDash([]);arrowHead(500,432,Math.PI/2,'#fff2cc');ctx.restore()}
+ if(state.phase===2){stamp(500,252,'ΤΟ ΕΛΛΗΝΙΚΟ ΚΕΝΤΡΟ ΥΠΟΧΩΡΕΙ','#fff0d2',13)}
+ if(state.phase===3){
+  const p=state.closing/100;
+  const a=greekPosition(LANES[0]),b=greekPosition(LANES[2]);
+  if(!state.rout){
+   ctx.save();ctx.strokeStyle='#fbdf8f';ctx.lineWidth=5;ctx.setLineDash([10,7]);ctx.lineCap='round';
+   ctx.beginPath();ctx.moveTo(a.x+18,a.y-40);ctx.quadraticCurveTo(a.x+82,365,491,393);
+   ctx.moveTo(b.x-18,b.y-40);ctx.quadraticCurveTo(b.x-82,365,509,393);ctx.stroke();ctx.setLineDash([]);
+   arrowHead(492,395,0,'#fbdf8f');arrowHead(508,395,Math.PI,'#fbdf8f');ctx.restore();
+   if(p>.12){
+    ctx.save();ctx.fillStyle='rgba(145,58,39,.14)';ctx.strokeStyle='rgba(254,230,161,.83)';ctx.lineWidth=2.4;
+    ctx.beginPath();ctx.ellipse(500,383,103-p*38,70-p*9,0,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.restore();
+   }
+   stamp(500,194,p>.39?'ΟΙ ΠΤΕΡΥΓΕΣ ΧΤΥΠΟΥΝ ΤΟ ΠΕΡΣΙΚΟ ΚΕΝΤΡΟ':'ΟΙ ΠΤΕΡΥΓΕΣ ΣΤΡΕΦΟΝΤΑΙ ΠΡΟΣ ΤΑ ΜΕΣΑ','#fff6d9',15);
+  }else{
+   stamp(500,194,'ΟΙ ΠΕΡΣΕΣ ΥΠΟΧΩΡΟΥΝ ΠΡΟΣ ΤΑ ΠΛΟΙΑ','#fff5d9',17);
+  }
+ }
 }
 function drawScene(){if(!board.width)return;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,drawW,drawH);ctx.fillStyle='#c4b084';ctx.fillRect(0,0,drawW,drawH);ctx.save();ctx.translate(ox,oy);ctx.scale(scale,scale);
  if(painting.complete&&painting.naturalWidth){ctx.drawImage(painting,0,0,W,H)}else{const gr=ctx.createLinearGradient(0,0,W,H);gr.addColorStop(0,'#cfbd88');gr.addColorStop(.75,'#b6a16a');gr.addColorStop(1,'#608e9e');ctx.fillStyle=gr;ctx.fillRect(0,0,W,H)}
  // pictorial map border and labels
  ctx.strokeStyle='rgba(249,235,196,.68)';ctx.lineWidth=4;ctx.strokeRect(14,14,W-28,H-28);
  ctx.fillStyle='rgba(47,67,50,.53)';ctx.fillRect(27,20,300,31);stamp(178,36,'ΤΟ ΠΕΔΙΟ ΤΟΥ ΜΑΡΑΘΩΝΑ','#fff0c9',17);
- stamp(903,45,'ΠΡΟΣ ΤΗΝ ΑΚΤΗ','#ffefc9',12);stamp(810,540,'ΠΕΡΣΙΚΑ ΠΛΟΙΑ','#ffefc9',12);
- // line of forward movement
- if(state.phase===0||state.mode==='menu'){stamp(530,545,'ΑΘΗΝΑΙΟΙ ΚΑΙ ΠΛΑΤΑΙΕΙΣ','#fff6df',17)}
+ stamp(903,45,'ΠΡΟΣ ΤΗΝ ΑΚΤΗ','#ffefc9',12);stamp(861,563,'ΠΡΟΣ ΤΑ ΠΛΟΙΑ','#ffefc9',12);
+ // Persian troops face the Greeks: the historical battle is read from top (Greeks) to bottom (Persians).
+ if(state.phase===0||state.mode==='menu'){stamp(500,151,'ΑΘΗΝΑΙΟΙ ΚΑΙ ΠΛΑΤΑΙΕΙΣ','#fff6df',16);stamp(500,562,'ΠΕΡΣΙΚΗ ΠΑΡΑΤΑΞΗ','#fff6df',15)}
+ if(state.phase>0&&state.phase<4)drawEffects();
  for(const lane of LANES){drawGroup(lane,false);drawGroup(lane,true)}
- if(state.phase>0&&state.phase<4){drawArrows();drawEffects()}
+ if(state.phase>0&&state.phase<4)drawArrows();
  // decorative distance and orientation
  ctx.save();ctx.translate(70,92);ctx.strokeStyle='#fff1d0';ctx.lineWidth=2;for(let i=0;i<8;i++){const a=i*Math.PI/4;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(Math.cos(a)*(i%2?15:25),Math.sin(a)*(i%2?15:25));ctx.stroke()}stamp(0,-37,'Β','#fff6da',11);ctx.restore();
  ctx.restore()}
-function canvasSelect(e){if(state.mode!=='battle'||state.paused||!modal.hidden)return;const r=board.getBoundingClientRect();const x=((e.clientX-r.left)-ox)/scale,y=((e.clientY-r.top)-oy)/scale;const nearest=LANES.reduce((a,b)=>Math.abs(y-b.y)<Math.abs(y-a.y)?b:a,LANES[0]);if(x<620)selectLane(nearest.id)}
+function canvasSelect(e){if(state.mode!=='battle'||state.paused||!modal.hidden)return;const r=board.getBoundingClientRect();const x=((e.clientX-r.left)-ox)/scale,y=((e.clientY-r.top)-oy)/scale;const nearest=x<397?'right':x>603?'left':'center';if(y>150&&y<575)selectLane(nearest)}
 board.addEventListener('pointerdown',canvasSelect);
 function tick(ts){const dt=Math.min(.06,Math.max(0,(ts-(state.lastTime||ts))/1000));state.lastTime=ts;if(state.mode==='battle'&&!state.paused&&modal.hidden)simulate(dt);if(toastTimer&&ts>toastTimer){$('toast').hidden=true;toastTimer=0}if(ts-(state.tick||0)>160){updateStatus();state.tick=ts}drawScene();requestAnimationFrame(tick)}
 $('guideBtn').onclick=openGuide;$('historyBtn').onclick=openSources;$('resetBtn').onclick=confirmReset;
